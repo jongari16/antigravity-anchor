@@ -4,24 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anchor NGN - KDS 14 20 54 상세 구조계산서</title>
+    <title>Anchor NGN Professional - KDS 14 20 54 정밀 구조계산 시스템</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
         rel="stylesheet">
     <style>
         :root {
-            --primary: #2563eb;
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
             --secondary: #64748b;
             --accent: #0f172a;
-            --bg: #f8fafc;
+            --bg: #f1f5f9;
             --sidebar-bg: #ffffff;
             --card-bg: #ffffff;
             --border: #e2e8f0;
             --text-main: #1e293b;
-            --text-muted: #64748b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --formula-bg: #f1f5f9;
+            --text-muted: #475569;
+            --success: #059669;
+            --danger: #dc2626;
+            --formula-bg: #f8fafc;
         }
 
         * {
@@ -36,47 +37,54 @@
             color: var(--text-main);
             display: flex;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* Sidebar */
+        /* Sidebar Navigation */
         .sidebar {
-            width: 300px;
+            width: 320px;
             background: var(--sidebar-bg);
             border-right: 1px solid var(--border);
             height: 100vh;
             position: fixed;
             overflow-y: auto;
-            padding: 2rem 1rem;
-            z-index: 100;
+            padding: 1.5rem 1rem;
+            z-index: 1000;
         }
 
         .sidebar h2 {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
+            font-size: 1.1rem;
             color: var(--primary);
-            font-weight: 700;
-            padding-left: 0.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .nav-list {
+            list-style: none;
         }
 
         .nav-item {
-            list-style: none;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
         }
 
         .nav-link {
             text-decoration: none;
             color: var(--text-muted);
-            font-size: 0.9rem;
-            padding: 0.75rem 1rem;
+            font-size: 0.85rem;
+            padding: 0.6rem 0.75rem;
             display: block;
-            border-radius: 0.5rem;
+            border-radius: 0.4rem;
             transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid transparent;
         }
 
         .nav-link:hover {
-            background: #f1f5f9;
+            background: #f8fafc;
             color: var(--primary);
+            border-color: var(--border);
         }
 
         .nav-link.active {
@@ -86,33 +94,38 @@
         }
 
         .sub-nav {
-            padding-left: 1.5rem;
-            margin-top: 0.25rem;
+            padding-left: 1.25rem;
+            display: none;
+            margin-top: 0.1rem;
+        }
+
+        .nav-item.expanded>.sub-nav {
+            display: block;
         }
 
         .sub-nav .nav-link {
-            font-size: 0.85rem;
-            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+            padding: 0.4rem 0.6rem;
         }
 
-        /* Main Content */
+        /* Main Content Area */
         .main-content {
-            margin-left: 300px;
+            margin-left: 320px;
             flex: 1;
             padding: 3rem;
-            max-width: 1200px;
+            max-width: 1100px;
         }
 
         .section {
             display: none;
-            animation: fadeIn 0.3s ease;
+            animation: slideUp 0.3s ease-out;
         }
 
         .section.active {
             display: block;
         }
 
-        @keyframes fadeIn {
+        @keyframes slideUp {
             from {
                 opacity: 0;
                 transform: translateY(10px);
@@ -125,466 +138,545 @@
         }
 
         h1 {
-            font-size: 2.25rem;
-            margin-bottom: 1.5rem;
+            font-size: 2rem;
             color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
         }
 
         h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
+            color: var(--primary);
             margin-top: 2rem;
             margin-bottom: 1rem;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 0.5rem;
+            border-left: 5px solid var(--primary);
+            padding-left: 0.75rem;
         }
 
         h3 {
-            font-size: 1.2rem;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
             color: var(--accent);
-            font-weight: 700;
+            margin: 1.5rem 0 0.75rem;
+            font-weight: 600;
         }
 
         p {
             line-height: 1.7;
             margin-bottom: 1rem;
-            color: var(--text-main);
+            color: var(--text-muted);
             font-size: 0.95rem;
         }
 
         .formula {
             background: var(--formula-bg);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            font-family: 'Courier New', Courier, monospace;
-            margin: 1rem 0;
-            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            font-family: 'Courier New', monospace;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
             overflow-x: auto;
         }
 
         .card {
             background: var(--card-bg);
-            border: 1px solid var(--border);
             border-radius: 1rem;
-            padding: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             margin-bottom: 2rem;
         }
 
-        /* Calculation Layout */
-        .design-layout {
-            display: flex;
+        /* Input Dashboard Layout */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 400px;
             gap: 2rem;
-            flex-wrap: wrap;
         }
 
-        .input-panel {
-            flex: 1;
-            min-width: 350px;
-        }
-
-        .diagram-panel {
-            flex: 1;
-            min-width: 350px;
-            background: #fff;
-            border-radius: 1rem;
-            border: 1px solid var(--border);
-            padding: 1rem;
+        .input-sections {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            gap: 1.5rem;
         }
 
-        .calc-grid {
+        .input-group-box {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+        }
+
+        .input-group-box h4 {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .grid-inputs {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
-            margin-top: 1rem;
         }
 
-        .input-group {
+        .control {
             display: flex;
             flex-direction: column;
             gap: 0.4rem;
         }
 
-        label {
+        .control label {
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--secondary);
         }
 
-        input,
-        select {
+        .control input,
+        .control select {
             padding: 0.6rem;
             border: 1px solid var(--border);
-            border-radius: 0.4rem;
+            border-radius: 0.5rem;
             font-size: 0.9rem;
+            transition: border 0.2s;
+        }
+
+        .control input:focus {
             outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
-        input:focus {
-            border-color: var(--primary);
+        /* SVG Panels */
+        .visual-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: sticky;
+            top: 2rem;
         }
 
-        .btn {
-            background: var(--primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 1rem;
-        }
-
-        .result-box {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            background: #f8fafc;
+        .svg-box {
+            background: white;
             border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
         }
 
-        .badge-fail {
-            background: var(--danger);
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 0.3rem;
-            font-size: 0.8rem;
+        .svg-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            display: block;
         }
 
-        .badge-pass {
-            background: var(--success);
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 0.3rem;
-            font-size: 0.8rem;
-        }
-
-        /* SVG Styles */
-        #anchor-svg {
-            max-width: 100%;
+        svg {
+            width: 100%;
             height: auto;
         }
 
-        .dim-line {
-            stroke: var(--primary);
-            stroke-width: 1.5;
-            marker-end: url(#arrowhead);
-            marker-start: url(#arrowhead);
+        /* Results Display */
+        .result-summary {
+            margin-top: 2rem;
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid var(--border);
         }
 
-        .dim-text {
-            fill: var(--primary);
-            font-size: 14px;
+        .result-header {
+            background: var(--accent);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .result-table th,
+        .result-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .result-table th {
+            background: #f8fafc;
             font-weight: 600;
-            text-anchor: middle;
+            color: var(--secondary);
+            text-transform: uppercase;
+            font-size: 0.75rem;
         }
 
-        .anchor-body {
-            fill: #94a3b8;
+        .pass-badge {
+            background: var(--success);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 700;
         }
 
-        .concrete {
-            fill: #e2e8f0;
+        .fail-badge {
+            background: var(--danger);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 700;
         }
 
         @media print {
-            .sidebar {
+
+            .sidebar,
+            .no-print {
                 display: none;
             }
 
             .main-content {
                 margin-left: 0;
-                padding: 1rem;
-            }
-
-            .no-print {
-                display: none;
+                padding: 0;
             }
 
             .section {
                 display: block !important;
                 page-break-after: always;
+                padding: 2rem;
+            }
+
+            .card {
+                box-shadow: none;
+                border: 1px solid #eee;
             }
         }
     </style>
 </head>
 
 <body>
-    <nav class="sidebar">
-        <h2>Anchor NGN</h2>
-        <ul>
-            <li class="nav-item"><a href="#intro" class="nav-link active" onclick="showSection('intro')">1. 일반사항</a>
+    <nav class="sidebar no-print">
+        <h2>KDS 14 20 54 앵커 설계</h2>
+        <ul class="nav-list">
+            <li class="nav-item expanded">
+                <a class="nav-link active" onclick="toggleNav(this, 's_1_all')">1. 일반사항</a>
+                <ul class="sub-nav">
+                    <li><a class="nav-link" onclick="showSection('s_11')">1.1 목적</a></li>
+                    <li><a class="nav-link" onclick="showSection('s_12')">1.2 적용 범위</a></li>
+                    <li><a class="nav-link" onclick="showSection('s_13')">1.3 참고 기준</a></li>
+                    <li><a class="nav-link" onclick="showSection('s_14')">1.4 용어의 정의</a></li>
+                    <li><a class="nav-link" onclick="showSection('s_15')">1.5 기호의 정의</a></li>
+                </ul>
             </li>
-            <li class="nav-item"><a href="#design_calc" class="nav-link" onclick="showSection('design_calc')">구조계산
-                    실행</a></li>
-            <li class="nav-item"><a href="#detail_41" class="nav-link" onclick="showSection('detail_41')">4.1 설계 일반</a>
-            </li>
-            <li class="nav-item"><a href="#detail_43" class="nav-link" onclick="showSection('detail_43')">4.3 인장 설계
-                    상세</a></li>
-            <li class="nav-item"><a href="#detail_44" class="nav-link" onclick="showSection('detail_44')">4.4 전단 설계
-                    상세</a></li>
-            <li class="nav-item"><a href="#detail_45" class="nav-link" onclick="showSection('detail_45')">4.5 동시 작용
-                    검토</a></li>
-            <li class="nav-item"><a href="#detail_47" class="nav-link" onclick="showSection('detail_47')">4.7 설치 및
-                    검사</a></li>
-            <li style="margin-top: 2rem;">
-                <button class="btn no-print" style="width: 100%;" onclick="window.print()">보고서 PDF 출력</button>
+            <li class="nav-item"><a class="nav-link" onclick="showSection('s_2')">2. 조사 및 계획</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="showSection('s_3')">3. 재료</a></li>
+            <li class="nav-item expanded">
+                <a class="nav-link" onclick="toggleNav(this, 's_calc')">4. 설계 및 계산</a>
+                <ul class="sub-nav">
+                    <li><a class="nav-link" onclick="showSection('s_calc')">4.0 정밀 수치 입력</a></li>
+                    <li><a class="nav-link" onclick="showSection('s_41')">4.1 설계 일반</a></li>
+                    <li><a class="nav-link" onclick="showSection('s_42')">4.2 강도 일반 규정</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="toggleNav(this, null)">4.3 인장 설계 상세</a>
+                        <ul class="sub-nav">
+                            <li><a class="nav-link" onclick="showSection('s_431')">4.3.1 강재강도</a></li>
+                            <li><a class="nav-link" onclick="showSection('s_432')">4.3.2 브레이크아웃</a></li>
+                            <li><a class="nav-link" onclick="showSection('s_433')">4.3.3 뽑힘강도</a></li>
+                            <li><a class="nav-link" onclick="showSection('s_434')">4.3.4 콘크리트 측면파열</a></li>
+                            <li><a class="nav-link" onclick="showSection('s_435')">4.3.5 부착강도</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="toggleNav(this, null)">4.4 전단 설계 상세</a>
+                        <ul class="sub-nav">
+                            <li><a class="nav-link" onclick="showSection('s_441')">4.4.1 강재강도</a></li>
+                            <li><a class="nav-link" onclick="showSection('s_442')">4.4.2 브레이크아웃</a></li>
+                            <li><a class="nav-link" onclick="showSection('s_443')">4.4.3 프라이아웃</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="nav-link" onclick="showSection('s_45')">4.5 동시 작용 검토</a></li>
+                    <li><a class="nav-link" onclick="showSection('s_46')">4.6 쪼갬파괴 방지</a></li>
+                    <li><a class="nav-link" onclick="showSection('s_47')">4.7 설치와 검사</a></li>
+                </ul>
             </li>
         </ul>
+        <button class="btn" style="width: 100%; margin-top: 2rem; background: var(--accent);"
+            onclick="window.print()">정밀 보고서 PDF 출력</button>
     </nav>
 
     <main class="main-content">
-        <!-- 1. 일반사항 -->
-        <section id="intro" class="section active">
-            <h1>1. 일반사항 (KDS 14 20 54)</h1>
+        <!-- 1.1 ~ 1.5 Sections -->
+        <section id="s_11" class="section active">
+            <h1>1.1 목적</h1>
             <div class="card">
-                <h3>1.1 목적</h3>
-                <p>본 설계기준은 콘크리트에 설치되어 하중을 전달하는 앵커의 설계 방법, 강도 산정 공식 및 안전성 검토 절차를 규정합니다.</p>
-                <h3>1.4 용어의 정의</h3>
-                <p><strong>유효매입깊이(h<sub>ef</sub>):</strong> 앵커 하단에서 콘크리트 표면까지의 수직 거리로, 실제 인장 파괴면의 깊이를 결정합니다.</p>
-                <p><strong>연단거리(c<sub>a</sub>):</strong> 앵커 중심에서 콘크리트 부재의 가장자리까지의 최소 거리입니다.</p>
-                <p><strong>콘크리트 브레이크아웃:</strong> 앵커 인장 시 콘크리트 표면이 원뿔 형태로 탈락하는 파괴 모드입니다.</p>
+                <p>본 설계기준은 콘크리트에 설치되어 하중을 전달하는 앵커의 설계 방법, 강도 산정 공식 및 안전성 검토 절차를 규정하여, 구조물의 안전성과 신뢰성을 확보하는 것을 목적으로 합니다.
+                </p>
+            </div>
+        </section>
+        <section id="s_12" class="section">
+            <h1>1.2 적용 범위</h1>
+            <div class="card">
+                <p>무근콘크리트 및 철근콘크리트 구조물의 부재에 사용되는 선설치 및 후설치 앵커 설계에 적용합니다.</p>
+            </div>
+        </section>
+        <section id="s_14" class="section">
+            <h1>1.4 용어의 정의</h1>
+            <div class="card">
+                <p><strong>유효매입깊이(hef):</strong> 앵커 하단에서 콘크리트 표면까지의 수직 거리.</p>
+                <p><strong>연단거리(ca):</strong>중중심에서 부재 가장자리까지의 거리.</p>
+                <p><strong>브레이크아웃:</strong> 콘크리트 원뿔 파괴 현상.</p>
+            </div>
+        </section>
+        <section id="s_15" class="section">
+            <h1>1.5 기호의 정의</h1>
+            <div class="card">
+                <p><strong>Ase,N:</strong> 인장 앵커 유효단면적</p>
+                <p><strong>Abrg:</strong> 앵커 헤드 지압 면적</p>
+                <p><strong>τrk:</strong> 부착식 앵커의 공칭 부착강도</p>
             </div>
         </section>
 
-        <!-- 구조계산 실행 -->
-        <section id="design_calc" class="section">
-            <h1>구조계산 및 치수 입력</h1>
+        <!-- 정밀 계산 대시보드 -->
+        <section id="s_calc" class="section">
+            <h1>4.0 앵커 정밀 구조검토 (KDS 14 20 54)</h1>
             <div class="card">
-                <div class="design-layout">
-                    <div class="input-panel">
-                        <h3>설계 매개변수 입력</h3>
-                        <div class="calc-grid">
-                            <div class="input-group">
-                                <label>앵커 종류</label>
-                                <select id="anchor-type" onchange="updateDiagram()">
-                                    <option value="headed">헤드볼트 (선설치)</option>
-                                    <option value="post-exp">확장앵커 (후설치)</option>
-                                    <option value="adhesive">부착식 앵커 (후설치)</option>
-                                </select>
-                            </div>
-                            <div class="input-group">
-                                <label>콘크리트 f<sub>ck</sub> (MPa)</label>
-                                <input type="number" id="fck" value="24" oninput="updateDiagram()">
-                            </div>
-                            <div class="input-group">
-                                <label>매입깊이 h<sub>ef</sub> (mm)</label>
-                                <input type="number" id="hef" value="100" oninput="updateDiagram()">
-                            </div>
-                            <div class="input-group">
-                                <label>연단거리 c<sub>a</sub> (mm)</label>
-                                <input type="number" id="ca" value="150" oninput="updateDiagram()">
-                            </div>
-                            <div class="input-group">
-                                <label>항복강도 f<sub>ya</sub> (MPa)</label>
-                                <input type="number" id="fya" value="400">
-                            </div>
-                            <div class="input-group">
-                                <label>인장하중 N<sub>ua</sub> (kN)</label>
-                                <input type="number" id="nua" value="15">
+                <div class="dashboard">
+                    <div class="input-sections">
+                        <!-- 기본 제원 -->
+                        <div class="input-group-box">
+                            <h4>제원 및 재료 (General)</h4>
+                            <div class="grid-inputs">
+                                <div class="control"><label>앵커 형식</label>
+                                    <select id="at_type" onchange="u_v()">
+                                        <option value="headed">헤드볼트 (선설치)</option>
+                                        <option value="exp">확장앵커 (후설치)</option>
+                                        <option value="adh">부착식 앵커 (부착식)</option>
+                                    </select>
+                                </div>
+                                <div class="control"><label>콘크리트 fck (MPa)</label><input type="number" id="at_fck"
+                                        value="24" oninput="u_v()"></div>
+                                <div class="control"><label>앵커 직경 d_a (mm)</label><input type="number" id="at_da"
+                                        value="20" oninput="u_v()"></div>
+                                <div class="control"><label>부재 두께 h_a (mm)</label><input type="number" id="at_ha"
+                                        value="200" oninput="u_v()"></div>
+                                <div class="control"><label>강재 항복 fya (MPa)</label><input type="number" id="at_fya"
+                                        value="400"></div>
+                                <div class="control"><label>강재 인장 futa (MPa)</label><input type="number" id="at_futa"
+                                        value="500"></div>
                             </div>
                         </div>
-                        <button class="btn" onclick="runCalculation()">계산 및 검토 실행</button>
+                        <!-- 기하학적 배치 -->
+                        <div class="input-group-box">
+                            <h4>기하학적 배치 (Geometry)</h4>
+                            <div class="grid-inputs">
+                                <div class="control"><label>유효매입깊이 hef (mm)</label><input type="number" id="at_hef"
+                                        value="100" oninput="u_v()"></div>
+                                <div class="control"><label>최소 연단거리 ca,min (mm)</label><input type="number" id="at_cmin"
+                                        value="150" oninput="u_v()"></div>
+                                <div class="control"><label>지압 면적 Abrg (mm²)</label><input type="number" id="at_abrg"
+                                        value="250"></div>
+                                <div class="control"><label>앵커 개수 (n)</label><input type="number" id="at_anc_n"
+                                        value="1" min="1"></div>
+                            </div>
+                        </div>
+                        <!-- 계수하중 -->
+                        <div class="input-group-box">
+                            <h4>계수하중 (Load)</h4>
+                            <div class="grid-inputs">
+                                <div class="control"><label>계수 인장 Nua (kN)</label><input type="number" id="at_nua"
+                                        value="20"></div>
+                                <div class="control"><label>계수 전단 Vua (kN)</label><input type="number" id="at_vua"
+                                        value="10"></div>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="calc_full()"
+                            style="width: 100%; height: 50px; font-size: 1rem;">KDS 전항목 일괄 검토</button>
                     </div>
-                    <div class="diagram-panel">
-                        <label style="margin-bottom: 10px;">앵커 설치 상세도 (단면)</label>
-                        <svg id="anchor-svg" width="400" height="300" viewBox="0 0 400 300">
-                            <defs>
-                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5"
-                                    orient="auto">
-                                    <polygon points="0 0, 10 3.5, 0 7" fill="var(--primary)" />
-                                </marker>
-                            </defs>
-                            <!-- Concrete Block -->
-                            <rect x="50" y="50" width="300" height="200" class="concrete" />
-                            <!-- Anchor -->
-                            <rect id="svg-anchor" x="190" y="30" width="20" height="150" class="anchor-body" />
-                            <rect id="svg-head" x="180" y="180" width="40" height="10" class="anchor-body" />
 
-                            <!-- Dimension Lines -->
-                            <line x1="220" y1="50" x2="220" y2="180" class="dim-line" />
-                            <text x="235" y="115" id="txt-hef" class="dim-text">hef</text>
-
-                            <line x1="50" y1="260" x2="200" y2="260" class="dim-line" />
-                            <text x="125" y="280" id="txt-ca" class="dim-text">ca</text>
-                        </svg>
-                        <p style="font-size: 0.8rem; color: var(--secondary); margin-top: 10px;">* 입력값에 따라 다이어그램의 매개변수가
-                            표시됩니다.</p>
+                    <div class="visual-panel">
+                        <div class="svg-box">
+                            <span class="svg-label">SIDE SECTION VIEW</span>
+                            <svg id="svg_side" viewBox="0 0 300 200">
+                                <rect x="20" y="50" width="260" height="130" fill="#f8fafc" stroke="#e2e8f0"
+                                    stroke-width="2" />
+                                <rect id="svg_anc_body" x="145" y="30" width="10" height="100" fill="#94a3b8" />
+                                <rect id="svg_anc_head" x="135" y="130" width="30" height="8" fill="#475569" />
+                                <line x1="160" y1="50" x2="160" y2="130" stroke="#3b82f6" stroke-dasharray="3" />
+                                <text x="170" y="90" fill="#3b82f6" font-size="10" font-weight="700">hef</text>
+                            </svg>
+                        </div>
+                        <div class="svg-box">
+                            <span class="svg-label">PLAN VIEW (EDGE DISTANCE)</span>
+                            <svg id="svg_plan" viewBox="0 0 300 200">
+                                <rect x="20" y="20" width="260" height="160" fill="#f8fafc" stroke="#e2e8f0"
+                                    stroke-width="2" />
+                                <circle cx="150" cy="100" r="5" fill="#3b82f6" />
+                                <line x1="20" y1="100" x2="150" y2="100" stroke="#3b82f6" stroke-dasharray="3" />
+                                <text x="60" y="95" fill="#3b82f6" font-size="10" font-weight="700">ca1</text>
+                            </svg>
+                        </div>
                     </div>
                 </div>
 
-                <div id="results" class="result-box" style="display: none;">
-                    <h3>구조검토 결과 요약</h3>
-                    <div id="res-summary"></div>
+                <div id="res_box" class="result-summary" style="display: none;">
+                    <div class="result-header">
+                        <span>종합 구조검토 리포트</span>
+                        <span id="global_status"></span>
+                    </div>
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>검토 구분</th>
+                                <th>검토 항목 (KDS 14 20 54)</th>
+                                <th>산정 강도 (kN)</th>
+                                <th>판정</th>
+                            </tr>
+                        </thead>
+                        <tbody id="res_tbody"></tbody>
+                    </table>
                 </div>
             </div>
         </section>
 
-        <!-- 4.1 설계 일반 상세 -->
-        <section id="detail_41" class="section">
-            <h1>4.1 설계 일반 (상세 설명)</h1>
+        <!-- 상세 설명 섹션들 -->
+        <section id="s_431" class="section">
+            <h1>4.3.1 인장 강재강도</h1>
             <div class="card">
-                <p>앵커 설계는 <strong>강도설계법</strong>을 원칙으로 하며, 다음과 같은 기본식을 만족해야 합니다.</p>
-                <div class="formula">φ R<sub>n</sub> ≥ U</div>
-                <ul>
-                    <li><strong>φ:</strong> 강도감소계수 (파괴 모드 및 연성에 따라 0.65~0.75 적용)</li>
-                    <li><strong>R<sub>n</sub>:</strong> 공칭강도 (강재, 콘크리트 파괴 중 최솟값)</li>
-                    <li><strong>U:</strong> 계수하중 (극한 하중 조합)</li>
-                </ul>
-                <p>강도 산정 시 콘크리트의 균열 유무(ψ<sub>c</sub>), 연단거리 영향(ψ<sub>ed</sub>) 등을 상수로 고려합니다.</p>
+                <div class="formula">Nsa = n · Ase,N · futa</div>
+                <p>앵커 볼트 자체가 끊어지는 강도로, 연성 파괴를 유도하는 것이 바람직합니다.</p>
             </div>
         </section>
-
-        <!-- 4.3 인장 설계 상세 -->
-        <section id="detail_43" class="section">
-            <h1>4.3 인장하중 설계 상세</h1>
+        <section id="s_432" class="section">
+            <h1>4.3.2 콘크리트 브레이크아웃</h1>
             <div class="card">
-                <h3>4.3.1 인장을 받는 앵커의 강재강도</h3>
-                <p>앵커 볼트 자체가 끊어지는 강도를 의미합니다.</p>
-                <div class="formula">N<sub>sa</sub> = n · A<sub>se,N</sub> · f<sub>uta</sub></div>
-
-                <h3>4.3.2 콘크리트 브레이크아웃 강도</h3>
-                <p>원뿔형 파괴면을 가정하여 계산하며, 매입깊이 h<sub>ef</sub>의 1.5승에 비례합니다.</p>
-                <div class="formula">N<sub>b</sub> = k<sub>c</sub> · λ<sub>a</sub> · √f<sub>ck</sub> ·
-                    h<sub>ef</sub><sup>1.5</sup></div>
-                <p>여기서 k<sub>c</sub>는 선설치 10, 후설치 7을 기본값으로 사용합니다.</p>
-
-                <h3>4.3.3 뽑힘 강도 (Pullout)</h3>
-                <p>앵커의 헤드나 확장 부분이 콘크리트를 짓이기며 빠져나오는 강도입니다. 앵커 제조사의 시험값 또는 기준식(8 · A<sub>brg</sub> · f<sub>ck</sub>)을
-                    따릅니다.</p>
+                <div class="formula">Nb = kc · λa · √fck · hef^1.5</div>
+                <p>매입 깊이에 따른 원뿔형 파괴 저항력입니다.</p>
             </div>
         </section>
-
-        <!-- 4.4 전단 설계 상세 -->
-        <section id="detail_44" class="section">
-            <h1>4.4 전단하중 설계 상세</h1>
+        <section id="s_433" class="section">
+            <h1>4.3.3 뽑힘강도 (Pullout)</h1>
             <div class="card">
-                <h3>4.4.1 전단을 받는 앵커의 강재강도</h3>
-                <p>앵커 볼트가 전단력에 의해 절단되는 강도입니다.</p>
-                <div class="formula">V<sub>sa</sub> = n · 0.6 · A<sub>se,V</sub> · f<sub>uta</sub></div>
-
-                <h3>4.4.2 전단 콘크리트 브레이크아웃</h3>
-                <p>가장자리(연단) 방향으로 파괴되는 모드로, 연단거리 c<sub>a1</sub>이 가장 중요한 변수입니다.</p>
-
-                <h3>4.4.3 콘크리트 프라이아웃 (Pryout)</h3>
-                <p>짧고 굵은 앵커가 전단력을 받을 때, 지레 원리에 의해 앵커 뒤쪽 콘크리트가 파괴되는 현상입니다. 인장 브레이크아웃 강도의 1~2배로 산정합니다.</p>
+                <div class="formula">Npn = ψc,p · Np</div>
+                <p>헤드 지압력에 의한 파괴 강도입니다.</p>
             </div>
         </section>
-
-        <!-- 4.5 동시 작용 -->
-        <section id="detail_45" class="section">
-            <h1>4.5 인장과 전단의 동시 작용</h1>
+        <section id="s_441" class="section">
+            <h1>4.4.1 전단 강재강도</h1>
             <div class="card">
-                <p>인장력과 전단력이 동시에 작용하는 경우, 두 하중 비율의 조합이 안전한지 검토합니다.</p>
-                <div class="formula">(N<sub>ua</sub> / φN<sub>n</sub>)<sup>ζ</sup> + (V<sub>ua</sub> /
-                    φV<sub>n</sub>)<sup>ζ</sup> ≤ 1.0</div>
-                <p>일반적으로 지수 ζ는 5/3 (약 1.67)을 사용합니다.</p>
+                <div class="formula">Vsa = n · 0.6 · Ase,V · futa</div>
+                <p>볼트의 전단 전단 내력입니다.</p>
             </div>
         </section>
-
-        <!-- 4.7 설치 및 검사 -->
-        <section id="detail_47" class="section">
-            <h1>4.7 설치와 검사</h1>
+        <section id="s_443" class="section">
+            <h1>4.4.3 콘크리트 프라이아웃</h1>
             <div class="card">
-                <p><strong>설치 깊이 확인:</strong> 설계 도면의 h<sub>ef</sub>를 정확히 유지해야 합니다.</p>
-                <p><strong>청소:</strong> 후설치 앵커, 특히 부착식 앵커는 구멍 내 가루(Blowing)를 완벽히 제거하지 않으면 강도가 50% 이상 저하될 수 있습니다.</p>
-                <p><strong>조임 토크:</strong> 확장 앵커는 제조사가 제시한 토크를 준수하여 초기 긴장력을 확보해야 합니다.</p>
+                <div class="formula">Vcp = kcp · Ncp</div>
+                <p>지레 원리에 의한 앵커 후면 콘크리트 파괴입니다.</p>
+            </div>
+        </section>
+        <section id="s_45" class="section">
+            <h1>4.5 동시 작용 검토</h1>
+            <div class="card">
+                <div class="formula">(Nua/φNn)^(5/3) + (Vua/φVn)^(5/3) ≤ 1.0</div>
+                <p>복합 하중 상태에서의 안전율 검토식입니다.</p>
             </div>
         </section>
     </main>
 
     <script>
-        function showSection(sectionId) {
+        function toggleNav(el, sid) { el.parentElement.classList.toggle('expanded'); if (sid) showSection(sid); }
+        function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
+            document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            const clickedLink = document.querySelector(`.nav-link[href="#${sectionId}"]`) || document.querySelector(`.nav-link[onclick*="${sectionId}"]`);
-            if (clickedLink) clickedLink.classList.add('active');
+            const l = document.querySelector(`a[onclick*="${id}"]`); if (l) l.classList.add('active');
             window.scrollTo(0, 0);
         }
 
-        function updateDiagram() {
-            const hef = document.getElementById('hef').value;
-            const ca = document.getElementById('ca').value;
-            const anchorType = document.getElementById('anchor-type').value;
-
-            document.getElementById('txt-hef').textContent = `hef = ${hef}mm`;
-            document.getElementById('txt-ca').textContent = `ca = ${ca}mm`;
-
-            // Adjust SVG element heights visually (proportional)
-            const anchor = document.getElementById('svg-anchor');
-            const head = document.getElementById('svg-head');
-            const hVal = Math.min(200, Math.max(50, parseInt(hef) / 1.5));
-
-            anchor.setAttribute('height', hVal);
-            head.setAttribute('y', 30 + hVal);
-
-            if (anchorType === 'adhesive') {
-                anchor.style.fill = '#475569';
-                head.style.display = 'none';
-            } else {
-                anchor.style.fill = '#94a3b8';
-                head.style.display = 'block';
-            }
+        function u_v() {
+            const hef = document.getElementById('at_hef').value;
+            const cmin = document.getElementById('at_cmin').value;
+            const body = document.getElementById('svg_anc_body');
+            const head = document.getElementById('svg_anc_head');
+            const h = Math.min(130, Math.max(40, hef / 1.1));
+            body.setAttribute('height', h);
+            head.setAttribute('y', 30 + h);
         }
 
-        function runCalculation() {
-            const fck = parseFloat(document.getElementById('fck').value);
-            const hef = parseFloat(document.getElementById('hef').value);
-            const ca = parseFloat(document.getElementById('ca').value);
-            const nua = parseFloat(document.getElementById('nua').value);
-            const fya = parseFloat(document.getElementById('fya').value);
-            const type = document.getElementById('anchor-type').value;
+        function calc_full() {
+            const fck = parseFloat(document.getElementById('at_fck').value);
+            const hef = parseFloat(document.getElementById('at_hef').value);
+            const cmin = parseFloat(document.getElementById('at_cmin').value);
+            const da = parseFloat(document.getElementById('at_da').value);
+            const futa = parseFloat(document.getElementById('at_futa').value);
+            const nua = parseFloat(document.getElementById('at_nua').value);
+            const vua = parseFloat(document.getElementById('at_vua').value);
+            const type = document.getElementById('at_type').value;
+            const anc_n = parseFloat(document.getElementById('at_anc_n').value);
 
-            // 1. 강재강도 (Steel Strength) - 전제: M20 앵커 (A=245mm2)
-            const Ase = 245;
-            const Nsa = Ase * fya / 1000; // kN
-            const phiSteel = 0.75;
+            const tbody = document.getElementById('res_tbody');
+            tbody.innerHTML = '';
+            let isGlobalPass = true;
 
-            // 2. 콘크리트 브레이크아웃 (Concrete Breakout)
+            // 1. 인장 강재강도 (Tensile Steel)
+            const Ase = (da * da * Math.PI / 4) * 0.78;
+            const Nsa = (anc_n * Ase * futa / 1000).toFixed(1);
+            const phiNsa = (Nsa * 0.75).toFixed(1);
+            isGlobalPass &= addR('인장', '4.3.1 강재강도', phiNsa, nua);
+
+            // 2. 인장 브레이크아웃 (Breakout)
             const kc = (type === 'headed') ? 10 : 7;
             let Nb = kc * Math.sqrt(fck) * Math.pow(hef, 1.5) / 1000;
+            let psi_ed = 1.0; if (cmin < 1.5 * hef) psi_ed = 0.7 + 0.3 * (cmin / (1.5 * hef));
+            const phiNcb = (Nb * psi_ed * 0.70).toFixed(1);
+            isGlobalPass &= addR('인장', '4.3.2 브레이크아웃', phiNcb, nua);
 
-            // 연단거리 영향 (Simplified ca < 1.5hef 일때)
-            let psi_ed = 1.0;
-            if (ca < 1.5 * hef) {
-                psi_ed = 0.7 + 0.3 * (ca / (1.5 * hef));
-            }
-            const Nn_breakout = Nb * psi_ed;
-            const phiConc = 0.70;
+            // 3. 인장 뽑힘 (Pullout)
+            const abrg = parseFloat(document.getElementById('at_abrg').value);
+            const Np = (8 * abrg * fck / 1000).toFixed(1);
+            const phiNpn = (Np * 0.70).toFixed(1);
+            isGlobalPass &= addR('인장', '4.3.3 뽑힘강도', phiNpn, nua);
 
-            // 비교 검토
-            const designSteel = (Nsa * phiSteel).toFixed(2);
-            const designConc = (Nn_breakout * phiConc).toFixed(2);
-            const minDesign = Math.min(designSteel, designConc);
+            // 4. 전단 강재강도 (Shear Steel)
+            const Vsa = (anc_n * Ase * futa * 0.6 / 1000).toFixed(1);
+            const phiVsa = (Vsa * 0.65).toFixed(1);
+            isGlobalPass &= addR('전단', '4.4.1 강재강도', phiVsa, vua);
 
-            const resultPanel = document.getElementById('results');
-            const summary = document.getElementById('res-summary');
-            resultPanel.style.display = 'block';
+            // 5. 전단 프라이아웃 (Pryout)
+            const kcp = (hef >= 65) ? 2.0 : 1.0;
+            const phiVcp = (kcp * phiNcb).toFixed(1);
+            isGlobalPass &= addR('전단', '4.4.3 프라이아웃', phiVcp, vua);
 
-            const isPass = minDesign >= nua;
+            // 6. 동시작용 (Interaction)
+            const ratio = Math.pow(nua / Math.min(phiNsa, phiNcb), 1.67) + Math.pow(vua / Math.min(phiVsa, phiVcp), 1.67);
+            const interactPass = ratio <= 1.0;
+            isGlobalPass &= interactPass;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>조합</td><td>4.5 동시작용(비율: ${ratio.toFixed(2)})</td><td>-</td><td><span class="${interactPass ? 'pass-badge' : 'fail-badge'}">${interactPass ? 'PASS' : 'FAIL'}</span></td>`;
+            tbody.appendChild(tr);
 
-            summary.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <strong>최종 판정: ${isPass ? '<span class="badge-pass">PASS</span>' : '<span class="badge-fail">FAIL</span>'}</strong>
-                    <span>안전율: ${(minDesign / nua).toFixed(2)}</span>
-                </div>
-                <p>1. 설계 강재강도 (φN<sub>sa</sub>): ${designSteel} kN</p>
-                <p>2. 설계 콘크리트 강도 (φN<sub>cb</sub>): ${designConc} kN</p>
-                <p style="border-top: 1px dashed var(--border); padding-top: 10px;">
-                    <strong>검토 결과:</strong> 최종 설계강도 ${minDesign} kN vs 계수하중 ${nua} kN
-                </p>
-                <p style="font-size: 0.8rem; color: var(--secondary); font-style: italic;">* 위 계산은 KDS 14 20 54 기준을 따르며, 그룹 효과 등 상세 조건에 따라 변동될 수 있습니다.</p>
-            `;
+            document.getElementById('res_box').style.display = 'block';
+            document.getElementById('global_status').innerHTML = isGlobalPass ? '<span class="pass-badge">SAFE</span>' : '<span class="fail-badge">UNSAFE</span>';
         }
 
-        // Initial setup
-        window.onload = updateDiagram;
+        function addR(cat, name, val, load) {
+            const tr = document.createElement('tr');
+            const pass = parseFloat(val) >= load;
+            tr.innerHTML = `<td>${cat}</td><td>${name}</td><td>${val} (설계)</td><td><span class="${pass ? 'pass-badge' : 'fail-badge'}">${pass ? 'PASS' : 'FAIL'}</span></td>`;
+            document.getElementById('res_tbody').appendChild(tr);
+            return pass;
+        }
+
+        window.onload = u_v;
     </script>
 </body>
 
