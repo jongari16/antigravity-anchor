@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anchor NGN - KDS 14 20 54 구조계산서</title>
+    <title>Anchor NGN - KDS 14 20 54 상세 구조계산서</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;700&display=swap"
         rel="stylesheet">
@@ -21,6 +21,7 @@
             --text-muted: #64748b;
             --success: #10b981;
             --danger: #ef4444;
+            --formula-bg: #f1f5f9;
         }
 
         * {
@@ -138,10 +139,11 @@
         }
 
         h3 {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-top: 1.5rem;
             margin-bottom: 0.75rem;
-            color: var(--primary);
+            color: var(--accent);
+            font-weight: 700;
         }
 
         p {
@@ -149,6 +151,16 @@
             margin-bottom: 1rem;
             color: var(--text-main);
             font-size: 0.95rem;
+        }
+
+        .formula {
+            background: var(--formula-bg);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary);
+            overflow-x: auto;
         }
 
         .card {
@@ -160,34 +172,57 @@
             margin-bottom: 2rem;
         }
 
-        /* Calculation UI */
+        /* Calculation Layout */
+        .design-layout {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .input-panel {
+            flex: 1;
+            min-width: 350px;
+        }
+
+        .diagram-panel {
+            flex: 1;
+            min-width: 350px;
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
         .calc-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
         }
 
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
         label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: var(--secondary);
         }
 
         input,
         select {
-            padding: 0.75rem;
+            padding: 0.6rem;
             border: 1px solid var(--border);
-            border-radius: 0.5rem;
+            border-radius: 0.4rem;
             font-size: 0.9rem;
             outline: none;
-            transition: border-color 0.2s;
         }
 
         input:focus {
@@ -202,11 +237,7 @@
             border-radius: 0.5rem;
             cursor: pointer;
             font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .btn:hover {
-            background: #1d4ed8;
+            margin-top: 1rem;
         }
 
         .result-box {
@@ -214,10 +245,53 @@
             padding: 1.5rem;
             border-radius: 0.5rem;
             background: #f8fafc;
-            border-left: 4px solid var(--primary);
+            border: 1px solid var(--border);
         }
 
-        /* Print Styles */
+        .badge-fail {
+            background: var(--danger);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.3rem;
+            font-size: 0.8rem;
+        }
+
+        .badge-pass {
+            background: var(--success);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.3rem;
+            font-size: 0.8rem;
+        }
+
+        /* SVG Styles */
+        #anchor-svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .dim-line {
+            stroke: var(--primary);
+            stroke-width: 1.5;
+            marker-end: url(#arrowhead);
+            marker-start: url(#arrowhead);
+        }
+
+        .dim-text {
+            fill: var(--primary);
+            font-size: 14px;
+            font-weight: 600;
+            text-anchor: middle;
+        }
+
+        .anchor-body {
+            fill: #94a3b8;
+        }
+
+        .concrete {
+            fill: #e2e8f0;
+        }
+
         @media print {
             .sidebar {
                 display: none;
@@ -225,16 +299,16 @@
 
             .main-content {
                 margin-left: 0;
-                padding: 0;
+                padding: 1rem;
+            }
+
+            .no-print {
+                display: none;
             }
 
             .section {
                 display: block !important;
                 page-break-after: always;
-            }
-
-            .no-print {
-                display: none;
             }
         }
     </style>
@@ -245,28 +319,20 @@
         <h2>Anchor NGN</h2>
         <ul>
             <li class="nav-item"><a href="#intro" class="nav-link active" onclick="showSection('intro')">1. 일반사항</a>
-                <ul class="sub-nav">
-                    <li><a href="#intro-purpose" class="nav-link" onclick="showSection('intro')">1.1 목적</a></li>
-                    <li><a href="#intro-scope" class="nav-link" onclick="showSection('intro')">1.2 적용 범위</a></li>
-                    <li><a href="#intro-ref" class="nav-link" onclick="showSection('intro')">1.3 참고 기준</a></li>
-                    <li><a href="#intro-def" class="nav-link" onclick="showSection('intro')">1.4 용어의 정의</a></li>
-                    <li><a href="#intro-sym" class="nav-link" onclick="showSection('intro')">1.5 기호의 정의</a></li>
-                </ul>
             </li>
-            <li class="nav-item"><a href="#survey" class="nav-link" onclick="showSection('survey')">2. 조사 및 계획</a></li>
-            <li class="nav-item"><a href="#material" class="nav-link" onclick="showSection('material')">3. 재료</a></li>
-            <li class="nav-item"><a href="#design" class="nav-link" onclick="showSection('design')">4. 설계</a>
-                <ul class="sub-nav">
-                    <li><a href="#design-gen" class="nav-link" onclick="showSection('design')">4.1 설계 일반</a></li>
-                    <li><a href="#design-rule" class="nav-link" onclick="showSection('design')">4.2 앵커 강도 규정</a></li>
-                    <li><a href="#design-tension" class="nav-link" onclick="showSection('design')">4.3 인장하중 설계</a></li>
-                    <li><a href="#design-shear" class="nav-link" onclick="showSection('design')">4.4 전단하중 설계</a></li>
-                    <li><a href="#design-combined" class="nav-link" onclick="showSection('design')">4.5 동시 작용</a></li>
-                    <li><a href="#design-split" class="nav-link" onclick="showSection('design')">4.6 쪼갬파괴 방지</a></li>
-                    <li><a href="#design-inst" class="nav-link" onclick="showSection('design')">4.7 설치와 검사</a></li>
-                </ul>
+            <li class="nav-item"><a href="#design_calc" class="nav-link" onclick="showSection('design_calc')">구조계산
+                    실행</a></li>
+            <li class="nav-item"><a href="#detail_41" class="nav-link" onclick="showSection('detail_41')">4.1 설계 일반</a>
             </li>
-            <li class="nav-item" style="margin-top: 2rem;">
+            <li class="nav-item"><a href="#detail_43" class="nav-link" onclick="showSection('detail_43')">4.3 인장 설계
+                    상세</a></li>
+            <li class="nav-item"><a href="#detail_44" class="nav-link" onclick="showSection('detail_44')">4.4 전단 설계
+                    상세</a></li>
+            <li class="nav-item"><a href="#detail_45" class="nav-link" onclick="showSection('detail_45')">4.5 동시 작용
+                    검토</a></li>
+            <li class="nav-item"><a href="#detail_47" class="nav-link" onclick="showSection('detail_47')">4.7 설치 및
+                    검사</a></li>
+            <li style="margin-top: 2rem;">
                 <button class="btn no-print" style="width: 100%;" onclick="window.print()">보고서 PDF 출력</button>
             </li>
         </ul>
@@ -275,105 +341,159 @@
     <main class="main-content">
         <!-- 1. 일반사항 -->
         <section id="intro" class="section active">
-            <h1>1. 일반사항</h1>
+            <h1>1. 일반사항 (KDS 14 20 54)</h1>
             <div class="card">
-                <h3 id="intro-purpose">1.1 목적</h3>
-                <p>본 설계기준은 콘크리트에 설치되는 앵커의 설계 방법과 규정을 정의하여 구조물의 안전성을 확보하는 것을 목적으로 한다.</p>
-
-                <h3 id="intro-scope">1.2 적용 범위</h3>
-                <p>이 기준은 무근콘크리트 및 철근콘크리트 구조물의 앵커 설계에 적용된다. 선설치앵커와 후설치(확장, 언더컷, 부착식) 앵커를 포함한다.</p>
-
-                <h3 id="intro-ref">1.3 참고 기준</h3>
-                <p>KDS 14 20 01 (콘크리트구조 설계(강도설계법) 일반), KDS 14 20 54 (콘크리트용 앵커 설계기준) 등.</p>
-
-                <h3 id="intro-def">1.4 용어의 정의</h3>
-                <p><strong>선설치앵커:</strong> 콘크리트를 타설하기 전에 거푸집에 미리 고정시킨 앵커.</p>
-                <p><strong>후설치앵커:</strong> 경화된 콘크리트에 구멍을 뚫고 설치하는 앵커.</p>
-
-                <h3 id="intro-sym">1.5 기호의 정의</h3>
-                <p>f<sub>ck</sub>: 콘크리트의 설계기준압축강도 (MPa)</p>
-                <p>h<sub>ef</sub>: 앵커의 유효매입깊이 (mm)</p>
-                <p>N<sub>ua</sub>: 인장력의 계수하중 (kN)</p>
+                <h3>1.1 목적</h3>
+                <p>본 설계기준은 콘크리트에 설치되어 하중을 전달하는 앵커의 설계 방법, 강도 산정 공식 및 안전성 검토 절차를 규정합니다.</p>
+                <h3>1.4 용어의 정의</h3>
+                <p><strong>유효매입깊이(h<sub>ef</sub>):</strong> 앵커 하단에서 콘크리트 표면까지의 수직 거리로, 실제 인장 파괴면의 깊이를 결정합니다.</p>
+                <p><strong>연단거리(c<sub>a</sub>):</strong> 앵커 중심에서 콘크리트 부재의 가장자리까지의 최소 거리입니다.</p>
+                <p><strong>콘크리트 브레이크아웃:</strong> 앵커 인장 시 콘크리트 표면이 원뿔 형태로 탈락하는 파괴 모드입니다.</p>
             </div>
         </section>
 
-        <!-- 2. 조사 및 계획 -->
-        <section id="survey" class="section">
-            <h1>2. 조사 및 계획</h1>
+        <!-- 구조계산 실행 -->
+        <section id="design_calc" class="section">
+            <h1>구조계산 및 치수 입력</h1>
             <div class="card">
-                <p>설계에 앞서 구조물의 용도, 하중 조건, 환경 영향(부식 등)에 대한 충분한 조사가 이루어져야 하며, 앵커 배치를 위한 콘크리트 부재의 치수와 철근 배근 상태를 확인해야 한다.
-                </p>
-            </div>
-        </section>
+                <div class="design-layout">
+                    <div class="input-panel">
+                        <h3>설계 매개변수 입력</h3>
+                        <div class="calc-grid">
+                            <div class="input-group">
+                                <label>앵커 종류</label>
+                                <select id="anchor-type" onchange="updateDiagram()">
+                                    <option value="headed">헤드볼트 (선설치)</option>
+                                    <option value="post-exp">확장앵커 (후설치)</option>
+                                    <option value="adhesive">부착식 앵커 (후설치)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>콘크리트 f<sub>ck</sub> (MPa)</label>
+                                <input type="number" id="fck" value="24" oninput="updateDiagram()">
+                            </div>
+                            <div class="input-group">
+                                <label>매입깊이 h<sub>ef</sub> (mm)</label>
+                                <input type="number" id="hef" value="100" oninput="updateDiagram()">
+                            </div>
+                            <div class="input-group">
+                                <label>연단거리 c<sub>a</sub> (mm)</label>
+                                <input type="number" id="ca" value="150" oninput="updateDiagram()">
+                            </div>
+                            <div class="input-group">
+                                <label>항복강도 f<sub>ya</sub> (MPa)</label>
+                                <input type="number" id="fya" value="400">
+                            </div>
+                            <div class="input-group">
+                                <label>인장하중 N<sub>ua</sub> (kN)</label>
+                                <input type="number" id="nua" value="15">
+                            </div>
+                        </div>
+                        <button class="btn" onclick="runCalculation()">계산 및 검토 실행</button>
+                    </div>
+                    <div class="diagram-panel">
+                        <label style="margin-bottom: 10px;">앵커 설치 상세도 (단면)</label>
+                        <svg id="anchor-svg" width="400" height="300" viewBox="0 0 400 300">
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5"
+                                    orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="var(--primary)" />
+                                </marker>
+                            </defs>
+                            <!-- Concrete Block -->
+                            <rect x="50" y="50" width="300" height="200" class="concrete" />
+                            <!-- Anchor -->
+                            <rect id="svg-anchor" x="190" y="30" width="20" height="150" class="anchor-body" />
+                            <rect id="svg-head" x="180" y="180" width="40" height="10" class="anchor-body" />
 
-        <!-- 3. 재료 -->
-        <section id="material" class="section">
-            <h1>3. 재료</h1>
-            <div class="card">
-                <p>앵커 재료는 관련 KS 규격을 충족해야 하며, 부착식 앵커의 경우 케미컬 재료의 특성(사용 온도, 양생 시간 등)을 고려해야 한다.</p>
-            </div>
-        </section>
+                            <!-- Dimension Lines -->
+                            <line x1="220" y1="50" x2="220" y2="180" class="dim-line" />
+                            <text x="235" y="115" id="txt-hef" class="dim-text">hef</text>
 
-        <!-- 4. 설계 -->
-        <section id="design" class="section">
-            <h1>4. 설계</h1>
-            <div class="card">
-                <h2>실시간 구조계산 엔진</h2>
-                <div class="calc-grid">
-                    <div class="input-group">
-                        <label>앵커 종류</label>
-                        <select id="anchor-type">
-                            <option value="headed">헤드볼트 (선설치)</option>
-                            <option value="post-exp">확장앵커 (후설치)</option>
-                            <option value="adhesive">부착식 앵커 (후설치)</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>콘크리트 강도 fck (MPa)</label>
-                        <input type="number" id="fck" value="24">
-                    </div>
-                    <div class="input-group">
-                        <label>매입깊이 hef (mm)</label>
-                        <input type="number" id="hef" value="100">
-                    </div>
-                    <div class="input-group">
-                        <label>앵커 직경 da (mm)</label>
-                        <input type="number" id="da" value="20">
-                    </div>
-                    <div class="input-group">
-                        <label>계수 인장하중 Nua (kN)</label>
-                        <input type="number" id="nua" value="10">
+                            <line x1="50" y1="260" x2="200" y2="260" class="dim-line" />
+                            <text x="125" y="280" id="txt-ca" class="dim-text">ca</text>
+                        </svg>
+                        <p style="font-size: 0.8rem; color: var(--secondary); margin-top: 10px;">* 입력값에 따라 다이어그램의 매개변수가
+                            표시됩니다.</p>
                     </div>
                 </div>
-                <button class="btn" style="margin-top: 1.5rem;" onclick="calculate()">계산 실행</button>
 
-                <div id="result" class="result-box" style="display: none;">
-                    <h3>계산 결과</h3>
-                    <div id="result-content"></div>
+                <div id="results" class="result-box" style="display: none;">
+                    <h3>구조검토 결과 요약</h3>
+                    <div id="res-summary"></div>
                 </div>
             </div>
+        </section>
 
+        <!-- 4.1 설계 일반 상세 -->
+        <section id="detail_41" class="section">
+            <h1>4.1 설계 일반 (상세 설명)</h1>
             <div class="card">
-                <h3 id="design-gen">4.1 설계 일반</h3>
-                <p>앵커의 강도는 인장 및 전단에 대한 모든 파괴 모드를 검토하여 그중 가장 작은 값으로 결정한다.</p>
+                <p>앵커 설계는 <strong>강도설계법</strong>을 원칙으로 하며, 다음과 같은 기본식을 만족해야 합니다.</p>
+                <div class="formula">φ R<sub>n</sub> ≥ U</div>
+                <ul>
+                    <li><strong>φ:</strong> 강도감소계수 (파괴 모드 및 연성에 따라 0.65~0.75 적용)</li>
+                    <li><strong>R<sub>n</sub>:</strong> 공칭강도 (강재, 콘크리트 파괴 중 최솟값)</li>
+                    <li><strong>U:</strong> 계수하중 (극한 하중 조합)</li>
+                </ul>
+                <p>강도 산정 시 콘크리트의 균열 유무(ψ<sub>c</sub>), 연단거리 영향(ψ<sub>ed</sub>) 등을 상수로 고려합니다.</p>
+            </div>
+        </section>
 
-                <h3 id="design-rule">4.2 앵커 강도에 관한 일반 규정</h3>
-                <p>설계강도 φR<sub>n</sub>은 계수하중 U보다 크거나 같아야 한다. (φR<sub>n</sub> ≥ U)</p>
+        <!-- 4.3 인장 설계 상세 -->
+        <section id="detail_43" class="section">
+            <h1>4.3 인장하중 설계 상세</h1>
+            <div class="card">
+                <h3>4.3.1 인장을 받는 앵커의 강재강도</h3>
+                <p>앵커 볼트 자체가 끊어지는 강도를 의미합니다.</p>
+                <div class="formula">N<sub>sa</sub> = n · A<sub>se,N</sub> · f<sub>uta</sub></div>
 
-                <h3 id="design-tension">4.3 인장하중에 대한 설계 조건</h3>
-                <p>강재강도(4.3.1), 콘크리트 브레이크아웃강도(4.3.2), 뽑힘강도(4.3.3), 측면파열강도(4.3.4), 부착강도(4.3.5)를 검토한다.</p>
+                <h3>4.3.2 콘크리트 브레이크아웃 강도</h3>
+                <p>원뿔형 파괴면을 가정하여 계산하며, 매입깊이 h<sub>ef</sub>의 1.5승에 비례합니다.</p>
+                <div class="formula">N<sub>b</sub> = k<sub>c</sub> · λ<sub>a</sub> · √f<sub>ck</sub> ·
+                    h<sub>ef</sub><sup>1.5</sup></div>
+                <p>여기서 k<sub>c</sub>는 선설치 10, 후설치 7을 기본값으로 사용합니다.</p>
 
-                <h3 id="design-shear">4.4 전단하중에 대한 설계 조건</h3>
-                <p>강재강도(4.4.1), 콘크리트 브레이크아웃강도(4.4.2), 프라이아웃강도(4.4.3)를 검토한다.</p>
+                <h3>4.3.3 뽑힘 강도 (Pullout)</h3>
+                <p>앵커의 헤드나 확장 부분이 콘크리트를 짓이기며 빠져나오는 강도입니다. 앵커 제조사의 시험값 또는 기준식(8 · A<sub>brg</sub> · f<sub>ck</sub>)을
+                    따릅니다.</p>
+            </div>
+        </section>
 
-                <h3 id="design-combined">4.5 인장력과 전단력의 동시 작용</h3>
-                <p>인장과 전단이 동시에 작용하는 경우 상관관계식을 사용하여 안전성을 검토한다.</p>
+        <!-- 4.4 전단 설계 상세 -->
+        <section id="detail_44" class="section">
+            <h1>4.4 전단하중 설계 상세</h1>
+            <div class="card">
+                <h3>4.4.1 전단을 받는 앵커의 강재강도</h3>
+                <p>앵커 볼트가 전단력에 의해 절단되는 강도입니다.</p>
+                <div class="formula">V<sub>sa</sub> = n · 0.6 · A<sub>se,V</sub> · f<sub>uta</sub></div>
 
-                <h3 id="design-split">4.6 쪼갬파괴 방지</h3>
-                <p>연단거리, 간격, 부재 두께 규정을 준수하여 콘크리트의 쪼갬파괴를 방지한다.</p>
+                <h3>4.4.2 전단 콘크리트 브레이크아웃</h3>
+                <p>가장자리(연단) 방향으로 파괴되는 모드로, 연단거리 c<sub>a1</sub>이 가장 중요한 변수입니다.</p>
 
-                <h3 id="design-inst">4.7 앵커 설치와 검사</h3>
-                <p>설계 도서에 명시된 절차에 따라 정확히 설치하고, 필요 시 비파괴 검사 등을 통해 설치 상태를 확인한다.</p>
+                <h3>4.4.3 콘크리트 프라이아웃 (Pryout)</h3>
+                <p>짧고 굵은 앵커가 전단력을 받을 때, 지레 원리에 의해 앵커 뒤쪽 콘크리트가 파괴되는 현상입니다. 인장 브레이크아웃 강도의 1~2배로 산정합니다.</p>
+            </div>
+        </section>
+
+        <!-- 4.5 동시 작용 -->
+        <section id="detail_45" class="section">
+            <h1>4.5 인장과 전단의 동시 작용</h1>
+            <div class="card">
+                <p>인장력과 전단력이 동시에 작용하는 경우, 두 하중 비율의 조합이 안전한지 검토합니다.</p>
+                <div class="formula">(N<sub>ua</sub> / φN<sub>n</sub>)<sup>ζ</sup> + (V<sub>ua</sub> /
+                    φV<sub>n</sub>)<sup>ζ</sup> ≤ 1.0</div>
+                <p>일반적으로 지수 ζ는 5/3 (약 1.67)을 사용합니다.</p>
+            </div>
+        </section>
+
+        <!-- 4.7 설치 및 검사 -->
+        <section id="detail_47" class="section">
+            <h1>4.7 설치와 검사</h1>
+            <div class="card">
+                <p><strong>설치 깊이 확인:</strong> 설계 도면의 h<sub>ef</sub>를 정확히 유지해야 합니다.</p>
+                <p><strong>청소:</strong> 후설치 앵커, 특히 부착식 앵커는 구멍 내 가루(Blowing)를 완벽히 제거하지 않으면 강도가 50% 이상 저하될 수 있습니다.</p>
+                <p><strong>조임 토크:</strong> 확장 앵커는 제조사가 제시한 토크를 준수하여 초기 긴장력을 확보해야 합니다.</p>
             </div>
         </section>
     </main>
@@ -383,41 +503,88 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            const clickedLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+            const clickedLink = document.querySelector(`.nav-link[href="#${sectionId}"]`) || document.querySelector(`.nav-link[onclick*="${sectionId}"]`);
             if (clickedLink) clickedLink.classList.add('active');
             window.scrollTo(0, 0);
         }
 
-        function calculate() {
-            const fck = parseFloat(document.getElementById('fck').value);
-            const hef = parseFloat(document.getElementById('hef').value);
-            const da = parseFloat(document.getElementById('da').value);
-            const nua = parseFloat(document.getElementById('nua').value);
+        function updateDiagram() {
+            const hef = document.getElementById('hef').value;
+            const ca = document.getElementById('ca').value;
             const anchorType = document.getElementById('anchor-type').value;
 
-            // Simplified Concrete Breakout Strength Calculation (KDS 14 20 54)
-            const k = (anchorType === 'headed') ? 10 : 7;
-            const Nb = k * Math.sqrt(fck) * Math.pow(hef, 1.5) / 1000;
-            const phi = 0.75;
-            const phiNn = phi * Nb;
+            document.getElementById('txt-hef').textContent = `hef = ${hef}mm`;
+            document.getElementById('txt-ca').textContent = `ca = ${ca}mm`;
 
-            const resultBox = document.getElementById('result');
-            const resultContent = document.getElementById('result-content');
-            resultBox.style.display = 'block';
+            // Adjust SVG element heights visually (proportional)
+            const anchor = document.getElementById('svg-anchor');
+            const head = document.getElementById('svg-head');
+            const hVal = Math.min(200, Math.max(50, parseInt(hef) / 1.5));
 
-            const status = (phiNn >= nua) ?
-                `<span style="color: var(--success); font-weight: bold;">PASS</span>` :
-                `<span style="color: var(--danger); font-weight: bold;">FAIL</span>`;
+            anchor.setAttribute('height', hVal);
+            head.setAttribute('y', 30 + hVal);
 
-            resultContent.innerHTML = `
-                <p><strong>검토 모드:</strong> 콘크리트 브레이크아웃 강도 (인장)</p>
-                <p>공칭강도 N<sub>b</sub> = ${Nb.toFixed(2)} kN</p>
-                <p>설계강도 φN<sub>n</sub> = ${phiNn.toFixed(2)} kN (φ=0.75)</p>
-                <p>계수하중 N<sub>ua</sub> = ${nua.toFixed(2)} kN</p>
-                <p><strong>안전율:</strong> ${(phiNn / nua).toFixed(2)}</p>
-                <p><strong>최종 판정:</strong> ${status}</p>
+            if (anchorType === 'adhesive') {
+                anchor.style.fill = '#475569';
+                head.style.display = 'none';
+            } else {
+                anchor.style.fill = '#94a3b8';
+                head.style.display = 'block';
+            }
+        }
+
+        function runCalculation() {
+            const fck = parseFloat(document.getElementById('fck').value);
+            const hef = parseFloat(document.getElementById('hef').value);
+            const ca = parseFloat(document.getElementById('ca').value);
+            const nua = parseFloat(document.getElementById('nua').value);
+            const fya = parseFloat(document.getElementById('fya').value);
+            const type = document.getElementById('anchor-type').value;
+
+            // 1. 강재강도 (Steel Strength) - 전제: M20 앵커 (A=245mm2)
+            const Ase = 245;
+            const Nsa = Ase * fya / 1000; // kN
+            const phiSteel = 0.75;
+
+            // 2. 콘크리트 브레이크아웃 (Concrete Breakout)
+            const kc = (type === 'headed') ? 10 : 7;
+            let Nb = kc * Math.sqrt(fck) * Math.pow(hef, 1.5) / 1000;
+
+            // 연단거리 영향 (Simplified ca < 1.5hef 일때)
+            let psi_ed = 1.0;
+            if (ca < 1.5 * hef) {
+                psi_ed = 0.7 + 0.3 * (ca / (1.5 * hef));
+            }
+            const Nn_breakout = Nb * psi_ed;
+            const phiConc = 0.70;
+
+            // 비교 검토
+            const designSteel = (Nsa * phiSteel).toFixed(2);
+            const designConc = (Nn_breakout * phiConc).toFixed(2);
+            const minDesign = Math.min(designSteel, designConc);
+
+            const resultPanel = document.getElementById('results');
+            const summary = document.getElementById('res-summary');
+            resultPanel.style.display = 'block';
+
+            const isPass = minDesign >= nua;
+
+            summary.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <strong>최종 판정: ${isPass ? '<span class="badge-pass">PASS</span>' : '<span class="badge-fail">FAIL</span>'}</strong>
+                    <span>안전율: ${(minDesign / nua).toFixed(2)}</span>
+                </div>
+                <p>1. 설계 강재강도 (φN<sub>sa</sub>): ${designSteel} kN</p>
+                <p>2. 설계 콘크리트 강도 (φN<sub>cb</sub>): ${designConc} kN</p>
+                <p style="border-top: 1px dashed var(--border); padding-top: 10px;">
+                    <strong>검토 결과:</strong> 최종 설계강도 ${minDesign} kN vs 계수하중 ${nua} kN
+                </p>
+                <p style="font-size: 0.8rem; color: var(--secondary); font-style: italic;">* 위 계산은 KDS 14 20 54 기준을 따르며, 그룹 효과 등 상세 조건에 따라 변동될 수 있습니다.</p>
             `;
         }
+
+        // Initial setup
+        window.onload = updateDiagram;
     </script>
 </body>
 
